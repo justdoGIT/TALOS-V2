@@ -1,0 +1,21 @@
+name: Performance measurements
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      seed_baseline:
+        description: Create Cargo baselines on this runner for review.
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  performance:
+    runs-on: ci-standard
+    uses: http://192.168.1.4:3000/justdoGIT/ci-templates/.forgejo/workflows/reusable-performance.yml@b7079eb3579ae146ae67b4faa3d29e1700011daa
+    with:
+      runner_label: ci-standard
+      templates_ref: b7079eb3579ae146ae67b4faa3d29e1700011daa
+      seed_baseline: ${{ github.event_name == 'workflow_dispatch' && inputs.seed_baseline }}
